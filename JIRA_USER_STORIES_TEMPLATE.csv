@@ -1,0 +1,122 @@
+Summary,Issue Type,Priority,Story Points,Epic Name,Description,Acceptance Criteria,Labels
+Browse Menu,Story,High,5,Customer Experience,"As a customer
+I want to browse the restaurant menu with images and prices
+So that I can decide what to order","- Menu displays all categories
+- Each item shows image, name, description, price
+- Items show availability status
+- Menu loads within 2 seconds",frontend,menu,customer
+Search Menu,Story,Medium,3,Customer Experience,"As a customer
+I want to search for specific dishes
+So that I can quickly find what I'm craving","- Search bar visible on menu page
+- Search works by dish name or ingredients
+- Results update in real-time
+- Display no results message if nothing found",frontend,search,customer
+Add to Cart,Story,High,5,Customer Experience,"As a customer
+I want to add items to my cart
+So that I can order multiple items at once","- Add to Cart button on each item
+- Cart icon shows item count
+- User can view cart without leaving page
+- Cart persists across page refreshes",frontend,cart,customer
+Customize Order,Story,High,8,Customer Experience,"As a customer
+I want to customize my order (size, toppings, special notes)
+So that I get exactly what I want","- Customization options appear when adding item
+- Price updates based on selections
+- Special instructions text box (max 200 chars)
+- Can edit customizations from cart",frontend,customization,customer
+Checkout Process,Story,High,8,Customer Experience,"As a customer
+I want to complete my order with delivery details
+So that the restaurant knows where to deliver","- Form for name, phone, address
+- Choose delivery or pickup
+- Select delivery time (ASAP or scheduled)
+- Form validation before submission",frontend,checkout,customer
+Online Payment,Story,High,13,Customer Experience,"As a customer
+I want to pay online securely
+So that I don't need cash on delivery","- Multiple payment options (Card/PayPal/Wallet)
+- Secure payment page (HTTPS)
+- Payment confirmation message
+- Receipt sent to email",backend,payment,customer,integration
+Track Order Status,Story,High,13,Customer Experience,"As a customer
+I want to track my order status in real-time
+So that I know when my food will arrive","- Status shows: Confirmed → Preparing → Ready → Out for Delivery → Delivered
+- Progress bar with current status highlighted
+- Estimated time for each stage
+- Updates automatically without refresh",frontend,backend,tracking,realtime
+Order History,Story,Low,5,Customer Experience,"As a registered customer
+I want to view my past orders
+So that I can easily reorder favorites","- Order history page shows last 20 orders
+- Each order shows date, items, total
+- Reorder button to add same items to cart
+- Filter orders by date range",frontend,customer,history
+View Orders Kitchen,Story,High,8,Kitchen Operations,"As a kitchen staff member
+I want to see all pending orders on a screen
+So that I can prepare them in order","- All new orders appear automatically
+- Orders sorted by time (oldest first)
+- Each order shows: number, items, special notes, time
+- Different colors for dine-in/takeout/delivery",frontend,kitchen,dashboard
+Update Order Status,Story,High,5,Kitchen Operations,"As a kitchen staff member
+I want to mark orders as preparing, ready, or completed
+So that everyone knows the order progress","- Status buttons on each order card
+- One-click status update
+- Status changes reflect immediately
+- Customer gets notification on status change",backend,kitchen,status,realtime
+Order Alerts,Story,Medium,5,Kitchen Operations,"As a kitchen staff member
+I want to get alerts for urgent orders
+So that I don't miss important orders","- Sound alert for new orders
+- Visual highlight for orders > 10 minutes old
+- Flash notification for VIP/priority orders
+- Volume control for alerts",frontend,kitchen,notifications
+Mark Items Unavailable,Story,Medium,3,Kitchen Operations,"As a kitchen staff member
+I want to mark menu items as out of stock
+So that customers don't order unavailable items","- Quick toggle on/off for each item
+- Item grayed out on customer menu immediately
+- Can add note about when available
+- Manager gets notification",frontend,backend,inventory
+View Deliveries,Story,High,8,Delivery Management,"As a delivery driver
+I want to see orders assigned to me
+So that I know what to deliver","- List of assigned deliveries
+- Shows customer address, order details, payment status
+- Map view of delivery location
+- Phone number to contact customer",frontend,delivery,driver
+Update Delivery Status,Story,High,13,Delivery Management,"As a delivery driver
+I want to update delivery status
+So that customers and restaurant know where I am","- Buttons: Picked Up / On the Way / Delivered
+- GPS automatically tracks location
+- Customer sees driver location on map
+- Photo proof of delivery option",frontend,backend,delivery,gps,realtime
+Navigate to Customer,Story,Medium,8,Delivery Management,"As a delivery driver
+I want to get directions to customer address
+So that I can deliver quickly","- Navigate button opens Google Maps
+- Optimized route for multiple deliveries
+- Shows estimated arrival time
+- Traffic-aware routing",frontend,integration,maps
+Delivery History,Story,Low,5,Delivery Management,"As a delivery driver
+I want to view my completed deliveries
+So that I can track my performance and earnings","- Shows deliveries for current day/week/month
+- Display: number of deliveries, total distance, earnings
+- Rating received from customers
+- Filter by date",frontend,delivery,driver,analytics
+Manage Menu Items,Story,Medium,8,Restaurant Management,"As a restaurant manager
+I want to add, edit, or remove menu items
+So that the menu stays current","- Form to add new item (name, price, description, image)
+- Edit existing items
+- Soft delete (archive) items
+- Changes reflect on customer menu immediately",frontend,backend,admin,menu
+View Analytics,Story,Medium,13,Restaurant Management,"As a restaurant manager
+I want to see sales reports and analytics
+So that I can make business decisions","- Dashboard shows: daily revenue, order count, popular items
+- Charts for trends over time
+- Peak hours analysis
+- Average order value",frontend,backend,admin,analytics,charts
+Manage Staff Accounts,Story,Low,8,Restaurant Management,"As a restaurant manager
+I want to create accounts for kitchen staff and drivers
+So that they can access the system","- Add user with role (Kitchen/Driver/Manager)
+- Set username and temporary password
+- Activate/deactivate accounts
+- View staff activity logs",backend,admin,users
+Customer Feedback,Story,Low,5,Restaurant Management,"As a restaurant manager
+I want to view customer ratings and reviews
+So that I can improve service","- Shows average rating (stars)
+- List of recent reviews with comments
+- Filter by rating (1-5 stars)
+- Respond to reviews",frontend,admin,feedback
+

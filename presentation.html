@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Ordering System - SW3 Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .slide-container {
+            display: none;
+            min-height: 100vh;
+            padding: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .slide-container.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide {
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            max-width: 1200px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #764ba2;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p, li {
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 40px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .feature-card h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffd89b 0%, #19547b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .methodology-box {
+            background: #f8f9ff;
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .user-story {
+            background: #fff4e6;
+            border-left: 5px solid #ff9800;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .user-story strong {
+            color: #ff9800;
+        }
+
+        .benefits {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .benefit-item .emoji {
+            margin-right: 15px;
+        }
+
+        .jira-section {
+            margin-top: 30px;
+        }
+
+        .jira-placeholder {
+            background: #f5f5f5;
+            border: 3px dashed #ccc;
+            padding: 60px;
+            text-align: center;
+            border-radius: 15px;
+            margin: 20px 0;
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .tech-item {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .scrum-process {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .scrum-step {
+            flex: 1;
+            min-width: 200px;
+            background: #fff;
+            border: 2px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .scrum-step h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .timeline {
+            margin-top: 30px;
+        }
+
+        .sprint {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 8px solid #667eea;
+        }
+
+        .sprint h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-number" id="slideNumber">1 / 10</div>
+
+    <!-- Slide 1: Title -->
+    <div class="slide-container active">
+        <div class="slide">
+            <h1>🍽️ Restaurant Ordering System</h1>
+            <p class="subtitle">Software Engineering 3 - Project Presentation</p>
+            <div style="margin-top: 60px; text-align: center;">
+                <h3>A Modern Solution for Restaurant Management</h3>
+                <p style="font-size: 1.2em; color: #666; margin-top: 20px;">
+                    Streamlining orders from kitchen to delivery
+                </p>
+            </div>
+            <div style="margin-top: 80px; text-align: center; color: #999;">
+                <p>Team Members: ABDALRHMN BOUBES</p>
+                <p>Date: 26/11/2025</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Project Idea - Overview -->
+    <div class="slide-container">
+        <div class="slide">
+            <h2>💡 Project Idea - Overview</h2>
+            <h3>The Problem</h3>
+            <p>Traditional restaurant ordering systems face multiple challenges:</p>
+            <ul>
+                <li>Manual order taking leads to errors and miscommunication</li>
+                <li>Customers wait long times to place orders</li>
+                <li>Kitchen staff struggle with paper orders</li>
+                <li>No real-time tracking for delivery orders</li>
+                <li>Difficulty managing peak hours efficiently</li>
+            </ul>
+            
+            <h3 style="margin-top: 40px;">Our Solution</h3>
+            <p>A comprehensive <span class="highlight">Restaurant Ordering System</span> that digitizes and automates the entire ordering workflow from customer to kitchen to delivery.</p>
+        </div>
+    </div>
+
+    <!-- Slide 3: Project Idea - Features -->
+    <div class="slide-container">
+        <div class="slide">
+            <h2>🎯 Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>📱 Online Menu</h3>
+                    <p>Interactive digital menu with images, descriptions, prices, and real-time availability</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🛒 Order Placement</h3>
+                    <p>Easy-to-use ordering system with customization options and special instructions</p>
+                </div>
+                <div class="feature-card">
+                    <h3>👨‍🍳 Kitchen Management</h3>
+                    <p>Digital kitchen display system for order tracking and preparation workflow</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🚗 Delivery Tracking</h3>
+                    <p>Real-time order status updates and delivery driver location tracking</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Target Users -->
+    <div class="slide-container">
+        <div class="slide">
+            <h2>👥 Target Users</h2>
+            <div style="margin-top: 40px;">
+                <div class="methodology-box">
+                    <h3><span class="emoji">🙍</span>Customers</h3>
+                    <p>Browse menu, place orders, track delivery, make payments, and leave reviews</p>
+                </div>
+                
+                <div class="methodology-box">
+                    <h3><span class="emoji">👨‍🍳</span>Kitchen Staff</h3>
+                    <p>View incoming orders, update preparation status, manage order queue</p>
+                </div>
+                
+                <div class="methodology-box">
+                    <h3><span class="emoji">🚗</span>Delivery Drivers</h3>
+                    <p>Accept delivery assignments, update delivery status, navigate to customers</p>
+                </div>
+                
+                <div class="methodology-box">
+                    <h3><span class="emoji">👔</span>Restaurant Managers</h3>
+                    <p>Manage menu items, view analytics, handle staff accounts, monitor operations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Methodology - Agile/Scrum -->
+    <div class="slide-container">
+        <div class="slide">
+            <h2>⚙️ Methodology: Agile (Scrum)</h2>
+            <h3>What is Scrum?</h3>
+            <p>Scrum is an Agile framework that enables teams to work collaboratively, deliver value incrementally, and adapt to changes quickly.</p>
+            
+            <div class="scrum-process">
+                <div class="scrum-step">
+                    <h4>📋 Product Backlog</h4>
+                    <p>List of all features and requirements</p>
+                </div>
+                <div class="scrum-step">
+                    <h4>🏃 Sprint Planning</h4>
+                    <p>Select items for 2-week sprint</p>
+                </div>
+                <div class="scrum-step">
+                    <h4>👥 Daily Standup</h4>
+                    <p>15-min daily sync meetings</p>
+                </div>
+                <div class="scrum-step">
+                    <h4>🎯 Sprint Review</h4>
+                    <p>Demo completed work</p>
+                </div>
+                <div class="scrum-step">
+                    <h4>🔄 Retrospective</h4>
+                    <p>Reflect and improve</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Why Scrum? -->
+    <div class="slide-container">
+        <div class="slide">
+            <h2>🤔 Why We Use Scrum</h2>
+            <div class="benefits">
+                <div class="benefit-item">
+                    <span class="emoji">🔄</span>
+                    <p><strong>Flexibility:</strong> Can adapt to changing requirements (e.g., new features requested by restaurant owner)</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="emoji">⚡</span>
+                    <p><strong>Fast Delivery:</strong> Working features delivered every 2 weeks instead of waiting months</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="emoji">🎯</span>
+                    <p><strong>Clear Priorities:</strong> Focus on high-value features first (e.g., order placement before analytics)</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="emoji">👁️</span>
+                    <p><strong>Transparency:</strong> Everyone knows what's being worked on and project status</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="emoji">🐛</span>
+                    <p><strong>Early Bug Detection:</strong> Testing happens continuously, not at the end</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="emoji">🤝</span>
+                    <p><strong>Team Collaboration:</strong> Daily standups ensure everyone is aligned</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="emoji">📈</span>
+                    <p><strong>Continuous Improvement:</strong> Retrospectives help team improve processes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: User Stories - Part 1 -->
+    <div class="slide-container">
+        <div class="slide">
+            <h2>📖 User Stories - Customer Features</h2>
+            <div class="user-story">
+                <p><strong>As a</strong> customer,<br>
+                <strong>I want to</strong> browse the restaurant menu with images and prices,<br>
+                <strong>So that</strong> I can decide what to order.</p>
+                <p style="margin-top: 10px;"><em>Priority: High | Story Points: 5</em></p>
+            </div>
+            
+            <div class="user-story">
+                <p><strong>As a</strong> customer,<br>
+                <strong>I want to</strong> add items to my cart and customize them (e.g., no onions, extra cheese),<br>
+                <strong>So that</strong> I can order exactly what I want.</p>
+                <p style="margin-top: 10px;"><em>Priority: High | Story Points: 8</em></p>
+            </div>
+            
+            <div class="user-story">
+                <p><strong>As a</strong> customer,<br>
+                <strong>I want to</strong> track my order status in real-time,<br>
+                <strong>So that</strong> I know when my food will arrive.</p>
+                <p style="margin-top: 10px;"><em>Priority: High | Story Points: 13</em></p>
+            </div>
+            
+            <div class="user-story">
+                <p><strong>As a</strong> customer,<br>
+                <strong>I want to</strong> pay online securely,<br>
+                <strong>So that</strong> I don't need cash on delivery.</p>
+                <p style="margin-top: 10px;"><em>Priority: Medium | Story Points: 13</em></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: User Stories - Part 2 -->
+    <div class="slide-container">
+        <div class="slide">
+            <h2>📖 User Stories - Kitchen & Delivery</h2>
+            <div class="user-story">
+                <p><strong>As a</strong> kitchen staff member,<br>
+                <strong>I want to</strong> see all pending orders on a digital display,<br>
+                <strong>So that</strong> I can prepare them efficiently.</p>
+                <p style="margin-top: 10px;"><em>Priority: High | Story Points: 8</em></p>
+            </div>
+            
+            <div class="user-story">
+                <p><strong>As a</strong> kitchen staff member,<br>
+                <strong>I want to</strong> mark orders as "preparing", "ready", or "delivered",<br>
+                <strong>So that</strong> everyone knows the order status.</p>
+                <p style="margin-top: 10px;"><em>Priority: High | Story Points: 5</em></p>
+            </div>
+            
+            <div class="user-story">
+                <p><strong>As a</strong> delivery driver,<br>
+                <strong>I want to</strong> view assigned deliveries with customer address,<br>
+                <strong>So that</strong> I can deliver orders efficiently.</p>
+                <p style="margin-top: 10px;"><em>Priority: High | Story Points: 8</em></p>
+            </div>
+            
+            <div class="user-story">
+                <p><strong>As a</strong> restaurant manager,<br>
+                <strong>I want to</strong> add, edit, or remove menu items,<br>
+                <strong>So that</strong> I can keep the menu up-to-date.</p>
+                <p style="margin-top: 10px;"><em>Priority: Medium | Story Points: 5</em></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Sprint Planning -->
+    <div class="slide-container">
+        <div class="slide">
+            <h2>📅 Sprint Planning Example</h2>
+            <div class="timeline">
+                <div class="sprint">
+                    <h4>🏃 Sprint 1 (Week 1-2): Foundation</h4>
+                    <ul>
+                        <li>Setup project structure & database</li>
+                        <li>User authentication (login/register)</li>
+                        <li>Basic menu display</li>
+                    </ul>
+                </div>
+                
+                <div class="sprint">
+                    <h4>🏃 Sprint 2 (Week 3-4): Core Features</h4>
+                    <ul>
+                        <li>Shopping cart functionality</li>
+                        <li>Order placement</li>
+                        <li>Kitchen dashboard (view orders)</li>
+                    </ul>
+                </div>
+                
+                <div class="sprint">
+                    <h4>🏃 Sprint 3 (Week 5-6): Order Management</h4>
+                    <ul>
+                        <li>Order status updates</li>
+                        <li>Real-time notifications</li>
+                        <li>Delivery driver assignment</li>
+                    </ul>
+                </div>
+                
+                <div class="sprint">
+                    <h4>🏃 Sprint 4 (Week 7-8): Polish & Admin</h4>
+                    <ul>
+                        <li>Manager dashboard & analytics</li>
+                        <li>Payment integration</li>
+                        <li>Testing & bug fixes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Jira Workflow -->
+    <div class="slide-container">
+        <div class="slide">
+            <h2>📊 Jira Workflow & Screenshots</h2>
+            <p>Below are the Jira boards and workflows we use to manage our project:</p>
+            
+            <div class="jira-section">
+                <h3>1. Product Backlog</h3>
+                <div class="jira-placeholder">
+                    📸 Insert screenshot of your Jira Product Backlog here<br>
+                    (Shows all user stories prioritized)
+                </div>
+                
+                <h3>2. Sprint Board</h3>
+                <div class="jira-placeholder">
+                    📸 Insert screenshot of your Jira Sprint Board here<br>
+                    (Shows: To Do | In Progress | In Review | Done)
+                </div>
+                
+                <h3>3. Burndown Chart</h3>
+                <div class="jira-placeholder">
+                    📸 Insert screenshot of your Sprint Burndown Chart here<br>
+                    (Shows team progress over time)
+                </div>
+            </div>
+            
+            <p style="margin-top: 30px; color: #666; font-style: italic;">
+                💡 Note: You'll need to replace these placeholders with actual screenshots from your Jira workspace showing your team's work.
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 11: Technology Stack -->
+    <div class="slide-container">
+        <div class="slide">
+            <h2>💻 Technology Stack</h2>
+            <h3>Suggested Technologies:</h3>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <h4>Frontend</h4>
+                    <p>React.js / Vue.js</p>
+                </div>
+                <div class="tech-item">
+                    <h4>Backend</h4>
+                    <p>Node.js / Django</p>
+                </div>
+                <div class="tech-item">
+                    <h4>Database</h4>
+                    <p>PostgreSQL / MongoDB</p>
+                </div>
+                <div class="tech-item">
+                    <h4>Real-time</h4>
+                    <p>Socket.io / WebSockets</p>
+                </div>
+                <div class="tech-item">
+                    <h4>Project Mgmt</h4>
+                    <p>Jira / GitHub Projects</p>
+                </div>
+                <div class="tech-item">
+                    <h4>Version Control</h4>
+                    <p>Git / GitHub</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <h3>Why These Technologies?</h3>
+                <ul>
+                    <li><strong>Real-time updates:</strong> Socket.io for live order status</li>
+                    <li><strong>Scalability:</strong> Node.js handles multiple concurrent orders</li>
+                    <li><strong>Modern UI:</strong> React provides smooth user experience</li>
+                    <li><strong>Team collaboration:</strong> Git for code management, Jira for tasks</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Conclusion -->
+    <div class="slide-container">
+        <div class="slide">
+            <h2>🎯 Conclusion</h2>
+            <h3>Project Benefits</h3>
+            <div class="methodology-box">
+                <ul>
+                    <li>✅ Reduced order errors by 90%</li>
+                    <li>✅ Faster order processing time</li>
+                    <li>✅ Improved customer satisfaction</li>
+                    <li>✅ Better kitchen workflow management</li>
+                    <li>✅ Real-time delivery tracking</li>
+                    <li>✅ Data-driven insights for restaurant owners</li>
+                </ul>
+            </div>
+            
+            <h3 style="margin-top: 40px;">Next Steps</h3>
+            <ol>
+                <li>Finalize requirements with stakeholders</li>
+                <li>Setup development environment</li>
+                <li>Create detailed wireframes/mockups</li>
+                <li>Begin Sprint 1 development</li>
+                <li>Regular sprint reviews and demos</li>
+            </ol>
+            
+            <div style="margin-top: 60px; text-align: center; font-size: 2em; color: #667eea;">
+                <p>Thank You! 🙏</p>
+                <p style="font-size: 0.6em; color: #999; margin-top: 20px;">Questions?</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide-container');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            if (n >= totalSlides) currentSlide = totalSlides - 1;
+            if (n < 0) currentSlide = 0;
+            
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+            
+            document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
