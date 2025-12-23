@@ -1,0 +1,28 @@
+# Git files
+.git
+.gitignore
+.github
+
+# Node modules (if any)
+node_modules
+npm-debug.log
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Documentation (keep only essential)
+# We want to include .md files, so don't ignore them
+

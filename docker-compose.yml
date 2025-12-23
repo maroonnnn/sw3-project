@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # Web presentation service
+  presentation:
+    build: .
+    container_name: sw3-presentation
+    ports:
+      - "8080:80"
+    volumes:
+      - ./presentation.html:/usr/share/nginx/html/index.html:ro
+      - ./README.md:/usr/share/nginx/html/README.md:ro
+    restart: unless-stopped
+    networks:
+      - sw3-network
+    labels:
+      - "com.sw3.service=presentation"
+      - "com.sw3.description=Restaurant Ordering System Presentation"
+
+  # Simulated Backend API (for demonstration)
+  api:
+    image: node:18-alpine
+    container_name: sw3-api
+    working_dir: /app
+    command: sh -c "echo 'API Server Ready' && tail -f /dev/null"
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - API_PORT=3000
+    networks:
+      - sw3-network
+    labels:
+      - "com.sw3.service=api"
+      - "com.sw3.description=Backend API Service"
+
+  # Simulated Database (for demonstration)
+  database:
+    image: postgres:15-alpine
+    container_name: sw3-database
+    environment:
+      POSTGRES_USER: restaurant_user
+      POSTGRES_PASSWORD: secure_password_123
+      POSTGRES_DB: restaurant_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - sw3-network
+    labels:
+      - "com.sw3.service=database"
+      - "com.sw3.description=PostgreSQL Database"
+
+  # Redis Cache (for demonstration)
+  cache:
+    image: redis:7-alpine
+    container_name: sw3-cache
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - sw3-network
+    labels:
+      - "com.sw3.service=cache"
+      - "com.sw3.description=Redis Cache"
+
+networks:
+  sw3-network:
+    driver: bridge
+    labels:
+      - "com.sw3.network=main"
+
+volumes:
+  postgres_data:
+    driver: local
+    labels:
+      - "com.sw3.volume=database"
+  redis_data:
+    driver: local
+    labels:
+      - "com.sw3.volume=cache"
+
